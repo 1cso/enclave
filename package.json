@@ -1,0 +1,56 @@
+{
+  "name": "citadeldoc",
+  "private": true,
+  "version": "0.1.0",
+  "main": "electron/main.cjs",
+  "description": "citadelDOC secure file management web application",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c blue,green \"npm:dev -w backend\" \"npm:dev -w frontend\"",
+    "build": "npm -w backend run build && npm -w frontend run build",
+    "start": "npm -w backend start",
+    "lint": "npm -w backend run lint && npm -w frontend run lint",
+    "desktop": "npm run build && electron .",
+    "desktop:win": "npm run build && electron-builder --win nsis"
+  },
+  "dependencies": {
+    "@incanta/custom-electron-titlebar": "^5.0.0",
+    "archiver": "^7.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "js-yaml": "^4.1.0",
+    "mime-types": "^2.1.35",
+    "multer": "^1.4.5-lts.2",
+    "nanoid": "^5.1.5",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.citadeldoc.app",
+    "productName": "citadelDOC",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**",
+      "backend/dist/**",
+      "frontend/dist/**",
+      "assets/**",
+      "themes/**",
+      "locales/**",
+      "node_modules/**",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "signAndEditExecutable": false
+    }
+  }
+}

@@ -1,0 +1,87 @@
+app:
+  name: citadelDOC
+menu:
+  file: File
+  edit: Edit
+  selection: Selection
+  view: View
+  go: Go
+  help: Help
+  settings: Settings
+  account: Account
+  close_container: Close container
+  search: Search
+  undo: Undo
+  redo: Redo
+  toggle_theme: Toggle theme
+  toggle_language: Toggle language
+  about: About
+  theme_dark: Dark
+  theme_light: Light
+home:
+  title: No container open
+  recent: Recent containers
+  open: Open container
+  create: Create new container
+container:
+  name: Container name
+  path: Container path
+  password: Master password
+  create: Create
+  unlock: Unlock
+explorer:
+  title: EXPLORER
+  more_actions: More…
+  new_file_short: File
+  new_branch_short: Folder
+  import_short: Import
+  export_short: Export
+  new_file: New file
+  new_file_prompt: "File name (e.g. notes.md):"
+  create_dialog_title_file: New file
+  create_dialog_title_folder: New folder
+  create_dialog_confirm: Create
+  create_dialog_cancel: Cancel
+  new_branch: New folder
+  search_placeholder: Search folders and files…
+  root: Root
+  import: Import
+  export: Export
+  refresh: Refresh
+  collapse_all: Collapse all
+  new_folder: New folder
+  new_folder_prompt: "Folder name:"
+  rename: Rename
+  delete: Delete
+  delete_confirm: Delete this item? This cannot be undone.
+  sidebar_files: Files
+  sidebar_search: Search
+  sidebar_extensions: Extensions
+  extensions_hint: Extension support is not available yet.
+  export_branch: Export folder
+  export_file: Export file
+editor:
+  empty: Open a file from the explorer
+tabs:
+  split_right: Split editor right
+  split_down: Split editor below
+  split_hint: Hold Alt to split below
+  more: More
+  empty_menu: No actions yet
+  more_close_all: Close All
+  more_close_all_kbd: Ctrl+W
+  more_close_all_mnemonic: M
+  more_close_saved: Close Saved
+  more_close_saved_kbd: Ctrl+M U
+  more_preview_editors: Enable Preview Editors
+  more_lock_group: Lock Group
+  more_configure_editors: Configure Editors
+  prev_tab_group: Previous tab
+  next_tab_group: Next tab
+viewer:
+  unsupported: Preview not available for this file type.
+errors:
+  generic: Something went wrong.
+  bad_password: Wrong password or corrupted container.
+  not_open: No container is open.
+

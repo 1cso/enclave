@@ -1,0 +1,35 @@
+:root[data-theme="dark"] {
+  /* VS Code Dark+ максимально близко */
+
+  --bg: #181818;
+  --panel: #1e1e1e;
+  --panel-2: #181818;
+
+  --text: #d4d4d4;
+  --muted: #cccccc;
+
+  --border: #2b2b2b;
+  --border-alt: #454545;
+  --accent: #317593;
+  --danger: #f14c4c;
+
+  --shadow: rgba(0, 0, 0, 0.45);
+
+  --lines: #404040;
+
+  --hover: rgba(255, 255, 255, 0.08);
+  --selection: rgba(0, 122, 204, 0.3);
+  --focusRing: rgba(0, 122, 204, 0.6);
+
+  --inputBg: #3c3c3c;
+  --inputBorder: #3c3c3c;
+
+  --scrollbar: rgba(121, 121, 121, 0.4);
+  --scrollbarHover: rgba(121, 121, 121, 0.7);
+
+  /* Codicons / activity bar — aligned with VS Code Dark+ token names */
+  --icon-foreground: #cccccc;
+  --icon-foreground-muted: #858585;
+  --icon-foreground-hover: #ffffff;
+  --icon-foreground-active: #ffffff;
+}

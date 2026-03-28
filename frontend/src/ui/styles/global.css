@@ -1,0 +1,2011 @@
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  height: 100%;
+  min-height: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ThemeIcon: inline SVG, currentColor; palette in themes (e.g. --icon-foreground) */
+.themeIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 0;
+  flex-shrink: 0;
+  color: var(--icon-foreground);
+}
+.themeIcon svg {
+  display: block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+/* Scrollbars (VS Code-like) */
+html::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Hide scrollbar buttons to match VS Code */
+*::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Ensure overrides for our main scroll containers */
+.panelBody::-webkit-scrollbar,
+.explorerSidePanel::-webkit-scrollbar,
+.browserEmbed::-webkit-scrollbar,
+.tabsBarScroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.panelBody::-webkit-scrollbar-track,
+.explorerSidePanel::-webkit-scrollbar-track,
+.browserEmbed::-webkit-scrollbar-track,
+.tabsBarScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.panelBody::-webkit-scrollbar-thumb,
+.explorerSidePanel::-webkit-scrollbar-thumb,
+.browserEmbed::-webkit-scrollbar-thumb,
+.tabsBarScroll::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar);
+  border-radius: 0;
+  border: 0;
+  background-clip: border-box;
+}
+
+.panelBody::-webkit-scrollbar-thumb:hover,
+.explorerSidePanel::-webkit-scrollbar-thumb:hover,
+.browserEmbed::-webkit-scrollbar-thumb:hover,
+.tabsBarScroll::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbarHover);
+  border: 0;
+  background-clip: border-box;
+}
+
+.panelBody::-webkit-scrollbar-thumb:active,
+.explorerSidePanel::-webkit-scrollbar-thumb:active,
+.browserEmbed::-webkit-scrollbar-thumb:active,
+.tabsBarScroll::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbarHover);
+  border: 0;
+  background-clip: border-box;
+}
+
+.panelBody,
+.explorerSidePanel,
+.browserEmbed,
+.tabsBarScroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar) transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar);
+  border-radius: 0;
+  border: 0;
+  background-clip: border-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbarHover);
+  border: 0;
+  background-clip: border-box;
+}
+
+/* Overlay scrollbar (JS-controlled visibility) */
+.overlayScrollWrapper {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.overlayScrollViewport {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge legacy */
+}
+.overlayScrollViewport::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.overlayScrollThumbTrack {
+  position: absolute;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.overlayScrollThumbTrackV {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--overlay-scroll-size, 10px);
+}
+
+.overlayScrollThumbTrackH {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--overlay-scroll-size, 10px);
+}
+
+.overlayScrollThumb {
+  position: absolute;
+  background-color: var(--scrollbar);
+  border-radius: 0;
+  pointer-events: auto;
+}
+
+.overlayScrollThumb:hover {
+  background-color: var(--scrollbarHover);
+}
+
+.overlayScrollThumb:active {
+  background-color: var(--scrollbarHover);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar) transparent;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+/* ── App shell ───────────────────────────────────────── */
+
+.appShell {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Prevent accidental UI text selection. Keep inputs editable/selectable. */
+.appShell * {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.appShell input,
+.appShell textarea,
+.appShell [contenteditable="true"] {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* ── Title bar (custom menubar): flex row + centered title overlay ── */
+
+.menuBar {
+  --window-controls-width: 0px;
+  position: relative;
+  height: 34px;
+  min-height: 34px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 0 10px;
+  padding-inline-end: calc(10px + max(var(--window-controls-width, 0px), env(titlebar-area-inset-right, 0px)));
+  border-bottom: none;
+  background: var(--bg);
+  flex-shrink: 0;
+  min-width: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-app-region: no-drag;
+  transition: none;
+}
+
+.menuBar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: max(var(--window-controls-width, 0px), env(titlebar-area-inset-right, 0px));
+  bottom: 0;
+  height: 1px;
+  background: var(--border);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.menuBarDragZone {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: transparent;
+  -webkit-app-region: drag;
+}
+
+.menuBarSurface {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
+  align-items: center;
+  column-gap: 8px;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.menuBarCenter {
+  position: relative;
+  z-index: 3;
+  justify-self: center;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.menuBarCenter .menuCenterIdle {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.menuBar button,
+.menuBar input,
+.menuBar .menuDrop,
+.menuBar .appMenu,
+.menuBar .menuSearchField,
+.menuBar .menuSearchCenteredHint,
+.menuBar .menuCenterLabel {
+  -webkit-app-region: no-drag;
+  pointer-events: auto;
+}
+
+.menuBarLeft {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
+  position: relative;
+  z-index: 3;
+  flex: 0 1 auto;
+}
+.menuBarAppIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  -webkit-user-drag: none;
+  color: var(--accent);
+}
+.menuBarAppIcon .themeIcon {
+  color: inherit;
+}
+
+.menuGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--muted);
+  min-width: 0;
+  overflow: visible;
+}
+
+.menuGroupCompact {
+  gap: 4px;
+}
+
+
+.menuDrop {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.menuMeasureRow {
+  position: fixed;
+  left: -10000px;
+  top: -10000px;
+  visibility: hidden;
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.menuBtnMeasure {
+  white-space: nowrap;
+}
+
+.menuMoreBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  padding: 4px;
+  white-space: nowrap;
+}
+
+.menuBtn {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.2;
+  pointer-events: auto;
+  -webkit-app-region: no-drag;
+}
+
+.menuBtn:hover {
+  background: var(--selection);
+  color: var(--text);
+  outline: dashed 1px var(--border-alt);
+  outline-offset: -1px;
+}
+
+.menuBtn.open,
+.menuBtn:focus {
+  background: var(--selection);
+  color: var(--text);
+  outline: solid 1px var(--border-alt);
+  outline-offset: -1px;
+}
+
+/* Unified menu surface: menubar dropdowns, context menus, anchored flyouts */
+.appMenu {
+  box-sizing: border-box;
+  min-width: 200px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 30px var(--shadow);
+  border-radius: 6px;
+  padding: 4px;
+  pointer-events: auto;
+}
+
+.appMenu--dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  z-index: 50;
+}
+
+.appMenu--dropdownEnd {
+  left: auto;
+  right: 0;
+}
+
+.appMenu--fixed {
+  position: fixed;
+  z-index: 10000;
+}
+
+.appMenu--anchorRight {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  margin-left: 6px;
+  z-index: 100;
+}
+
+.appMenu--wide {
+  min-width: 280px;
+}
+
+.appMenuItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.appMenuItem:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.appMenuItem:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.appMenuItem--danger {
+  color: var(--danger);
+}
+
+.appMenuSep {
+  height: 1px;
+  background: var(--border);
+  margin: 6px 4px;
+}
+
+.appMenuRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 13px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  border-radius: 6px;
+}
+
+.appMenuRow:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.appMenuRow:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.appMenuRow--muted {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.appMenuRow--muted:hover {
+  background: transparent;
+}
+
+.appMenuRowKbd {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: ui-monospace, "Cascadia Mono", "Consolas", monospace;
+  white-space: nowrap;
+}
+
+.appDialogBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.appDialogCard {
+  width: min(520px, calc(100vw - 40px));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: 0 12px 30px var(--shadow);
+  padding: 12px;
+}
+
+.appDialogTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.appDialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.menuBarRight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0;
+  justify-self: end;
+  min-width: 0;
+  position: relative;
+  z-index: 3;
+}
+
+.menuRight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0;
+  margin-left: auto;
+  flex: 0 0 auto;
+  min-width: 0;
+  position: relative;
+  z-index: 3;
+}
+
+.menuRightActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.menuDropEnd {
+  position: relative;
+}
+
+.menuBarIconBtn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.menuBarIconBtn:hover {
+  background: var(--hover);
+}
+
+.menuBarIconBtn .themeIcon {
+  color: var(--icon-foreground-muted);
+}
+.menuBarIconBtn:hover .themeIcon {
+  color: var(--icon-foreground-hover);
+}
+
+.menuBarIconImg.themeIcon {
+  pointer-events: none;
+  color: var(--icon-foreground);
+}
+
+.menuCenter {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  width: 100%;
+  max-width: 600px;
+  min-width: 0;
+  padding: 0 6px;
+  box-sizing: border-box;
+  overflow: hidden;
+  pointer-events: none;
+  transition: none;
+}
+
+.menuSearchRow {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  pointer-events: auto;
+  transition: none;
+}
+
+.menuSearchNavBtn {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.menuSearchNavBtn:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.menuSearchNavBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.menuSearchField {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  height: 24px;
+  border: 1px solid var(--border-alt, var(--border));
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0 8px;
+  width: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  flex: 1 1 auto;
+  transition: none;
+}
+
+.menuMoreBtnSlotHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.menuSearchCenteredHint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 10px;
+  pointer-events: none;
+}
+
+.menuSearchCenteredText {
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menuSearchField:focus-within {
+  border-color: var(--focusRing);
+}
+
+.menuSearchIcon.themeIcon {
+  opacity: 0.75;
+  flex-shrink: 0;
+  pointer-events: none;
+  color: var(--icon-foreground-muted);
+}
+
+.menuCenterIdle {
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  text-align: center;
+}
+
+.menuSearchInput {
+  width: 100%;
+  flex: 1 1 auto;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  outline: none;
+  border-radius: 0;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 22px;
+  text-align: left;
+  color: var(--text);
+  background: transparent;
+}
+
+.menuSearchInput::placeholder {
+  color: var(--muted);
+}
+
+.menuCenterLabel {
+  color: var(--muted);
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  background: transparent;
+  cursor: text;
+}
+
+.menuCenterLabel:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+
+.pill {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Status bar (VS Code-like) ───────────────────────── */
+.statusBar {
+  height: 22px;
+  min-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 8px;
+  font-size: 12px;
+  color: #ffffff;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  user-select: none;
+}
+
+.statusBarError {
+  background: var(--danger);
+  border-top-color: color-mix(in srgb, var(--danger) 70%, #000000 30%);
+}
+
+.statusBarLeft,
+.statusBarRight {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  gap: 2px;
+}
+
+.statusBarItem {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.statusBarItem:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.statusBarItemError {
+  font-weight: 600;
+}
+
+/* ── Split layout ────────────────────────────────────── */
+
+.splitRoot {
+  height: 100%;
+  display: flex;
+}
+
+.splitter {
+  width: 1px;
+  position: relative;
+  flex-shrink: 0;
+  background: var(--border);
+}
+
+/* зона захвата */
+.splitter::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -5px;
+  right: -5px;
+  cursor: col-resize;
+}
+
+/* hover overlay: 2px accent without changing splitter geometry */
+.splitter::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.splitter:hover::after {
+  opacity: 1;
+}
+/* ── Panel ───────────────────────────────────────────── */
+
+.panel {
+  min-width: 180px;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.panelInner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.panelHeader {
+  /* 35px + 1px border-bottom = 36px — точно как .tabsBar */
+  height: 36px;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+  background: var(--panel-2);
+}
+
+.panelBody {
+  padding: 10px;
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.panelBodyTabs {
+  padding: 16px;
+}
+
+.panelBodyExplorer {
+  padding: 6px 10px 10px;
+  background: var(--bg);
+}
+
+/* ── VS Code–style tabs ──────────────────────────────── */
+
+.tabsBarWrap {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex-shrink: 0;
+  width: 100%;
+  min-height: 35px;
+  background: var(--panel-2);
+  position: relative;
+  z-index: 1;
+}
+
+.tabsBarWrap::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--border);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.tabsBarScroll {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: auto;
+  background: var(--panel-2);
+}
+
+/* ── Breadcrumbs (editor) ─────────────────────────────── */
+.editorBreadcrumbsBar {
+  height: 24px;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 0 10px;
+  background: var(--panel);
+  line-height: 24px;
+}
+
+.breadcrumbItem {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  font-size: 12px;
+  color: #cccccc;
+  cursor: default;
+  user-select: none;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.breadcrumbItemLink {
+  cursor: pointer;
+  color: #cccccc;
+}
+
+.breadcrumbItemLink:hover {
+  color: #cccccc;
+}
+
+.breadcrumbItemLast {
+  font-weight: 600;
+  cursor: default;
+  color: #cccccc !important;
+}
+
+.breadcrumbItemActive {
+  color: #cccccc !important;
+}
+
+.breadcrumbSep {
+  display: inline-flex;
+  align-items: center;
+  color: #cccccc;
+  height: 100%;
+  line-height: 0;
+}
+
+.breadcrumbSepIcon {
+  color: #cccccc !important;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  line-height: 0;
+}
+
+.tabsBarWrap > .tabsBarToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 8px 0 6px;
+  flex-shrink: 0;
+  align-self: stretch;
+  min-height: 35px;
+  border-left: 1px solid var(--border);
+  background: var(--panel-2);
+}
+
+.tabsBarToolBtn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tabsBarToolBtn:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.tabsBarToolBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.tabsBarToolBtnSplit {
+  touch-action: manipulation;
+}
+
+.tabsBarToolIcon.themeIcon {
+  pointer-events: none;
+  color: var(--icon-foreground-muted);
+}
+.tabsBarToolBtn:hover:not(:disabled) .tabsBarToolIcon.themeIcon {
+  color: var(--icon-foreground-hover);
+}
+
+.editorPaneBody {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.browserEmbed {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  height: 100%;
+}
+
+.monacoEditorShell {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden; /* Monaco сам скроллит внутри */
+  padding: 0;
+}
+
+/* Рекурсивный сплит редактора 50/50 (flex) */
+.editorEqualRow {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  min-height: 0;
+  min-width: 0;
+}
+
+.editorEqualCol {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.editorEqualPane {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.editorEqualCol > .editorEqualPane {
+  min-height: 120px;
+}
+
+.editorSash {
+  position: relative;
+  flex-shrink: 0;
+  background: var(--border);
+  transition: none;
+}
+.editorSash:hover {
+  background: var(--border);
+}
+.editorSash::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+}
+
+/* overlay accent: 2px, no geometry changes */
+.editorSash::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  background: var(--accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.editorSash:hover::after {
+  opacity: 1;
+}
+.editorSashV {
+  width: 1px;
+  min-width: 1px;
+  cursor: col-resize;
+}
+.editorSashV::before {
+  top: 0;
+  bottom: 0;
+  left: -5px;
+  right: -5px;
+}
+
+.editorSashV::after {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+}
+.editorSashH {
+  height: 1px;
+  min-height: 1px;
+  cursor: row-resize;
+}
+.editorSashH::before {
+  left: 0;
+  right: 0;
+  top: -5px;
+  bottom: -5px;
+}
+
+.editorSashH::after {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.editorLeaf {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.editorLeafEmpty {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel);
+}
+
+.tabsBar {
+  min-height: 35px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  align-content: flex-start;
+  background: var(--panel-2);
+  position: relative;
+  flex: 0 0 auto;
+  padding: 0;
+  margin: 0;
+  width: max-content;
+}
+
+.tabsBarScroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 35px;
+  padding: 0 28px 0 10px;
+  min-width: 80px;
+  max-width: none;
+  flex-shrink: 0;
+  background: var(--panel-2);
+  border-top: 1px solid transparent;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  z-index: 1;
+}
+
+.tabActive {
+  background: var(--panel);
+  border-top-color: var(--accent);
+  border-bottom-color: transparent;
+  border-bottom-width: 0;
+  z-index: 2;
+}
+
+.tabSingle {
+  /* Если в панели только 1 вкладка, неактивная тоже должна выглядеть "встроенной"
+     (как активная), чтобы визуально вкладка не казалась исчезнувшей после split. */
+  background: var(--panel);
+  border-bottom-width: 0;
+}
+
+.tabLabel {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.15;
+  flex: 1;
+  min-width: 0;
+}
+
+.tabActive .tabLabel {
+  color: var(--text);
+}
+
+.tabClose {
+  position: absolute;
+  right: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s, background 0.1s;
+}
+
+.tabCloseIcon.themeIcon {
+  pointer-events: none;
+  opacity: 0.85;
+  color: var(--icon-foreground-muted);
+}
+
+.tabActive .tabClose,
+.tab:hover .tabClose {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tabClose:hover {
+  background: rgba(128, 128, 128, 0.25);
+}
+
+.tabClose:hover .tabCloseIcon.themeIcon {
+  opacity: 1;
+  color: var(--icon-foreground-hover);
+}
+
+.tabActive .tabClose .tabCloseIcon.themeIcon,
+.tab:hover .tabClose .tabCloseIcon.themeIcon {
+  color: var(--icon-foreground);
+}
+
+/* ── Tree ────────────────────────────────────────────── */
+
+.treeRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.treeRow:hover {
+  background: var(--hover);
+}
+
+.treeRowActive {
+  background: var(--selection);
+}
+
+.treeIndent {
+  width: 10px;
+  flex: 0 0 10px;
+}
+
+/* ── Chevron / icon buttons ──────────────────────────── */
+
+.chevBtn {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.chevBtn:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.chevBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.chevSpacer {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+}
+
+/* ── Utility ─────────────────────────────────────────── */
+
+.muted {
+  color: var(--muted);
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--inputBorder);
+  background: var(--inputBg);
+  color: var(--text);
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+.input:focus {
+  outline: 1px solid var(--focusRing);
+  outline-offset: 0;
+}
+
+.btn {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.btnPrimary {
+  border-color: var(--accent);
+  background: var(--selection);
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: var(--selection);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.stack {
+  display: grid;
+  gap: 10px;
+}
+
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.homeStartActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.homeRecentList {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.homeRecentRow {
+  width: 100%;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  border-radius: 6px;
+  padding: 4px 6px;
+  display: grid;
+  grid-template-columns: minmax(100px, 200px) 1fr;
+  gap: 8px;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.homeRecentRow:hover {
+  background: var(--hover);
+  border-color: var(--border);
+}
+
+.homeRecentName {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 16px;
+}
+
+.homeRecentPath {
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 16px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  box-shadow: 0 10px 30px var(--shadow);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.viewerFrame {
+  height: 100%;
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  background: var(--panel-2);
+}
+
+/* ── Markdown ────────────────────────────────────────── */
+
+.md {
+  line-height: 1.55;
+}
+
+.md :where(h1, h2, h3) {
+  margin: 18px 0 10px;
+}
+
+.md :where(p, ul, ol, pre, blockquote) {
+  margin: 10px 0;
+}
+
+.md :where(code) {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.95em;
+}
+
+.md :where(pre) {
+  padding: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  border-radius: 12px;
+  overflow: auto;
+}
+
+.md :where(blockquote) {
+  padding-left: 12px;
+  border-left: 3px solid rgba(124, 92, 255, 0.5);
+  color: var(--muted);
+}
+
+.md :where(a) {
+  color: var(--accent);
+}
+
+/* ── Explorer (VS Code style) ────────────────────────── */
+
+.explorerPane {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  height: 100%;
+  min-height: 0;
+  background: var(--bg);
+}
+
+.explorerMainColumn {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.explorerHeader {
+  flex-shrink: 0;
+  height: 36px;
+  padding: 0 8px 0 10px;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--panel-2);
+}
+
+.explorerTitle {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.explorerHeaderEllipsisWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.explorerHeaderMenuPanel {
+  min-width: 180px;
+}
+
+.explorerMenuItemWithIcon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+
+.explorerMenuItemWithIcon .explorerMenuItemIcon {
+  flex-shrink: 0;
+  opacity: 0.9;
+  transition: opacity 0.12s ease, filter 0.12s ease;
+}
+
+.explorerMenuItemWithIcon:hover .explorerMenuItemIcon {
+  opacity: 1;
+  filter: brightness(1.12);
+}
+
+.explorerToolbar {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.explorerToolBtn {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.explorerEllipsisBtn {
+  width: 22px;
+  height: 22px;
+}
+
+.explorerEllipsisImg {
+  pointer-events: none;
+  opacity: 0.88;
+  transition: opacity 0.12s ease, filter 0.12s ease;
+}
+
+.explorerToolBtn:hover {
+  background: var(--hover);
+  border-color: var(--border);
+}
+
+.explorerEllipsisBtn:hover .explorerEllipsisImg {
+  opacity: 1;
+  filter: brightness(1.15);
+}
+
+.explorerBody {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.explorerSidePanel {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 10px;
+  background: var(--bg);
+}
+
+.explorerSideSearchInput {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.explorerSideHint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+/* VS Code–style vertical activity bar (left strip) */
+.explorerActivityBar {
+  flex-shrink: 0;
+  width: 48px;
+  box-sizing: border-box;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  padding: 0;
+  background: var(--panel-2);
+}
+
+.explorerActBottomGroup {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.explorerActBtnWrap {
+  position: relative;
+}
+
+.explorerActBtn {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+  border: none;
+  border-radius: 0;
+  border-left: 2px solid transparent;
+  box-sizing: border-box;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.explorerActIconImg {
+  pointer-events: none;
+  opacity: 0.78;
+  transition: opacity 0.12s ease, filter 0.12s ease;
+}
+
+.explorerActBtn:hover .explorerActIconImg {
+  opacity: 1;
+  filter: brightness(1.12);
+}
+
+.explorerActBtn:hover {
+  background: var(--hover);
+}
+
+.explorerActBtn.explorerActBtnActive {
+  background: transparent;
+  border-left-color: var(--accent);
+  box-shadow: none;
+}
+
+.explorerActBtn.explorerActBtnActive .explorerActIconImg {
+  opacity: 1;
+  filter: brightness(1.08);
+}
+
+.explorerRenameInput {
+  flex: 1;
+  min-width: 0;
+  height: 20px;
+  padding: 0 10px 0 4px;
+  font-size: 13px;
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+}
+
+.explorerRenameInput:focus {
+  outline: 1px solid var(--focusRing);
+  outline-offset: -1px;
+}
+
+.explorerRowInlineCreate {
+  cursor: default;
+}
+
+.explorerInlineCreateInput {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Selected folder — border only, same fill as list */
+.explorerRowFolder.explorerRowActive {
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+/* Selected file only — avoids fighting .explorerRowFolder background rules */
+.explorerRow.explorerRowActive:not(.explorerRowFolder) {
+  background: #1d2c33;
+  box-shadow: inset 0 0 0 1px #317593;
+}
+
+/* SVG icons from /app-assets (smooth scale, no crisp-edges) */
+.explorerSvgImg {
+  display: block;
+  flex-shrink: 0;
+  object-fit: contain;
+  object-position: center;
+  image-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.explorerContainer {
+  background: var(--bg);
+  position: relative;
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.explorerVirtualInner {
+  position: relative;
+}
+
+.explorerVirtualPad {
+  flex-shrink: 0;
+}
+
+.explorerRow {
+  position: relative;
+  left: 0;
+  right: 0;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  line-height: 22px;
+  cursor: pointer;
+  padding: 0;
+  font-size: 13px;
+  font-family: inherit;
+  box-sizing: border-box;
+  border: none;
+  background: transparent;
+}
+
+/* Row hover — files only (folders: no hover row tint) */
+.explorerRow:not(.explorerRowFolder):hover:not(.explorerRowActive) {
+  background: var(--hover);
+}
+
+/* Non-selected folders: panel bg, no hover change */
+.explorerRowFolder:not(.explorerRowActive) {
+  background: var(--bg);
+}
+
+.explorerRowMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Folder rows: reserve label space only when strip is visible */
+.explorerRowMainWithFolderStrip {
+  padding-right: 0;
+  transition: padding-right 0.1s ease;
+}
+
+.explorerRowRoot:hover .explorerRowMainWithFolderStrip,
+.explorerRowRoot:focus-within .explorerRowMainWithFolderStrip {
+  padding-right: 108px;
+}
+
+.explorerRowRoot {
+  position: relative;
+}
+
+.explorerRowRootActions {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 0 2px 0 10px;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.08s ease;
+}
+
+.explorerRowRoot:hover .explorerRowRootActions,
+.explorerRowRoot:focus-within .explorerRowRootActions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.explorerRowRootBtn {
+  border: none;
+  border-radius: 2px;
+  padding: 2px;
+  min-width: 22px;
+  min-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  background: transparent !important;
+  cursor: pointer;
+}
+
+.explorerRowRootIcon {
+  pointer-events: none;
+  opacity: 0.9;
+  transition: opacity 0.12s ease, filter 0.12s ease;
+}
+
+.explorerRowRootBtn:hover {
+  background: var(--hover) !important;
+}
+
+.explorerRowRootBtn:hover .explorerRowRootIcon {
+  opacity: 1;
+  filter: brightness(1.15);
+}
+
+.explorerChevron {
+  width: 18px;
+  height: 18px;
+  margin-right: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+.explorerChevronImg {
+  pointer-events: none;
+  opacity: 0.78;
+  transition: opacity 0.12s ease, filter 0.12s ease;
+}
+
+/* Chevrons only on folder rows — no hover effect on them */
+
+.explorerRowFolder.explorerRowActive .explorerChevronImg {
+  opacity: 1;
+  filter: none;
+}
+
+.explorerTreeTypeIcon {
+  margin-right: 4px;
+  flex-shrink: 0;
+  opacity: 0.82;
+  transition: opacity 0.12s ease, filter 0.12s ease;
+}
+
+/* Tree type icon hover — file rows only */
+.explorerRow:not(.explorerRowFolder):hover:not(.explorerRowActive) .explorerTreeTypeIcon {
+  opacity: 1;
+  filter: brightness(1.1);
+}
+
+.explorerRowFolder.explorerRowActive .explorerTreeTypeIcon,
+.explorerRow:not(.explorerRowFolder).explorerRowActive .explorerTreeTypeIcon {
+  opacity: 1;
+  filter: none;
+}
+
+.explorerChevronPlaceholder {
+  width: 18px;
+  height: 18px;
+  margin-right: 2px;
+  flex-shrink: 0;
+}
+
+.explorerLabel {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 22px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* VS Code-like guides */
+.explorerGuide {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--lines);
+  opacity: 0.4;
+}
+
+.explorerRow:hover .explorerGuide {
+  opacity: 0.7;
+}
+
+.explorerGuide.hovered {
+  opacity: 1;
+  background: var(--hover);
+}

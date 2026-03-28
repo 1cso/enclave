@@ -1,0 +1,28 @@
+:root[data-theme="light"] {
+  /* VS Code Light+ inspired */
+  --bg: #ffffff; /* editor background */
+  --panel: #ffffff; /* sidebar/panels */
+  --panel-2: #ffffff; /* slightly darker surface */
+  --text: #1e1e1e;
+  --muted: #6a6a6a;
+  --border: #e5e5e5;
+  --accent: #007acc; /* VS Code blue */
+  --danger: #d13438;
+  --shadow: rgba(0, 0, 0, 0.1);
+
+  --lines: #d0d0d0;
+
+  --hover: rgba(0, 0, 0, 0.05);
+  --selection: rgba(0, 122, 204, 0.15);
+  --focusRing: rgba(0, 122, 204, 0.4);
+  --inputBg: #ffffff;
+  --inputBorder: #cecece;
+  --scrollbar: rgba(100, 100, 100, 0.3);
+  --scrollbarHover: rgba(100, 100, 100, 0.5);
+
+  /* VS Code Light+–style icon / activity bar contrast */
+  --icon-foreground: #505050;
+  --icon-foreground-muted: #616161;
+  --icon-foreground-hover: #000000;
+  --icon-foreground-active: #000000;
+}

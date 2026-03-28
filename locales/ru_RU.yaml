@@ -1,0 +1,87 @@
+app:
+  name: citadelDOC
+menu:
+  file: Файл
+  edit: Правка
+  selection: Выделение
+  view: Вид
+  go: Перейти
+  help: Справка
+  settings: Настройки
+  account: Аккаунт
+  close_container: Закрыть контейнер
+  search: Поиск
+  undo: Отменить
+  redo: Повторить
+  toggle_theme: Сменить тему
+  toggle_language: Сменить язык
+  about: О программе
+  theme_dark: Тёмная
+  theme_light: Светлая
+home:
+  title: Контейнер не открыт
+  recent: Недавние контейнеры
+  open: Открыть контейнер
+  create: Создать новый контейнер
+container:
+  name: Имя контейнера
+  path: Путь к контейнеру
+  password: Мастер‑пароль
+  create: Создать
+  unlock: Разблокировать
+explorer:
+  title: ПРОВОДНИК
+  more_actions: Ещё…
+  new_file_short: Файл
+  new_branch_short: Папка
+  import_short: Импорт
+  export_short: Экспорт
+  new_file: Новый файл
+  new_file_prompt: "Имя файла (например notes.md):"
+  create_dialog_title_file: Новый файл
+  create_dialog_title_folder: Новая папка
+  create_dialog_confirm: Создать
+  create_dialog_cancel: Отмена
+  new_branch: Новая папка
+  search_placeholder: Поиск по папкам и файлам…
+  root: Корень
+  import: Импорт
+  export: Экспорт
+  refresh: Обновить
+  collapse_all: Свернуть всё
+  new_folder: Новая папка
+  new_folder_prompt: "Имя папки:"
+  rename: Переименовать
+  delete: Удалить
+  delete_confirm: Удалить этот элемент? Это действие нельзя отменить.
+  sidebar_files: Файлы
+  sidebar_search: Поиск
+  sidebar_extensions: Расширения
+  extensions_hint: Поддержка расширений пока недоступна.
+  export_branch: Экспорт папки
+  export_file: Экспорт файла
+editor:
+  empty: Откройте файл из проводника
+tabs:
+  split_right: Разделить редактор справа
+  split_down: Разделить редактор снизу
+  split_hint: Alt — разделение снизу
+  more: Ещё
+  empty_menu: Пока нет действий
+  more_close_all: Закрыть все
+  more_close_all_kbd: Ctrl+W
+  more_close_all_mnemonic: M
+  more_close_saved: Закрыть сохранённые
+  more_close_saved_kbd: Ctrl+M U
+  more_preview_editors: Включить редакторы предпросмотра
+  more_lock_group: Заблокировать группу
+  more_configure_editors: Настроить редакторы
+  prev_tab_group: Предыдущая вкладка
+  next_tab_group: Следующая вкладка
+viewer:
+  unsupported: Предпросмотр недоступен для этого типа файла.
+errors:
+  generic: Что-то пошло не так.
+  bad_password: Неверный пароль или контейнер поврежден.
+  not_open: Контейнер не открыт.
+
